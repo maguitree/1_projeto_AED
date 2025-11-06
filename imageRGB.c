@@ -556,10 +556,22 @@ int ImageIsEqual(const Image img1, const Image img2) {
   assert(img1 != NULL);
   assert(img2 != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  if ( img1->height != img2->height || img1->width != img2->width ) return 0;
 
-  return 0;
+  for (uint32 i = 0; i < img1->height; i++) {
+      for (uint32 j = 0; j < img1->width; j++) {
+
+        uint16 label1 = img1->image[i][j];
+        uint16 label2 = img2->image[i][j];
+
+        rgb_t color1 = img1->LUT[label1];
+        rgb_t color2 = img2->LUT[label2];
+
+        if ( color1 != color2 ) return 0;
+      }
+  }
+
+  return 1;
 }
 
 int ImageIsDifferent(const Image img1, const Image img2) {
