@@ -3,9 +3,9 @@
 ## Divisão de Tarefas
 
 - `Image ImageCopy(img)` - Miguel
-- `int ImageIsEqual(img1, img2)` - Miguel
+- `int ImageIsEqual(img1, img2)` - Margarida
 - `Image ImageRotate90CW(img)` - Margarida
-- `Image ImageRotate180CW(img)` - Margarida
+- `Image ImageRotate180CW(img)` - Miguel
 - `int ImageRegionFillingRecursive(img, u, v, color)` - Margarida
 - `int ImageRegionFillingWithQUEUE(img, u, v, color)` - Miguel
 - `int ImageRegionFillingWithSTACK(img, u, v, color)` - Margarida
