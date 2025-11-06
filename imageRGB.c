@@ -11,12 +11,12 @@
 /// 2025
 
 // Student authors (fill in below):
-// NMec:
-// Name:
-// NMec:
-// Name:
+// NMec: 125624
+// Name: Miguel Soares Sousa
+// NMec: 125011
+// Name: Margarida Simões Pinheiro
 //
-// Date:
+// Date: 6/11/2025
 //
 
 #include "imageRGB.h"
@@ -586,10 +586,24 @@ int ImageIsDifferent(const Image img1, const Image img2) {
 Image ImageRotate90CW(const Image img) {
   assert(img != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  Image rotated = AllocateImageHeader(img->height, img->width);
 
-  return NULL;
+  for ( uint32 i = 0; i < rotated->height; i++ ) {
+    rotated->image[i] = AllocateRowArray(rotated->width);
+  }
+
+  rotated->num_colors = img->num_colors;
+  for ( int i = 0; i < img->num_colors; i++ ) {
+    rotated->LUT[i] = img->LUT[i];  
+  }
+
+  for (uint32 i = 0; i < img->height; i++) {
+      for (uint32 j = 0; j < img->width; j++) {
+          rotated->image[j][img->height - 1 - i] = img->image[i][j];
+      }
+  }
+
+  return rotated;
 }
 
 /// Rotate 180 degrees clockwise (CW).
@@ -629,15 +643,35 @@ int ImageIsValidPixel(Image img, int u, int v) {
 /// Each function carries out a different version of the algorithm.
 
 /// Region growing using the recursive flood-filling algorithm.
+// helper function for the recursive
+static int FloodFillRecursive(Image img, int u, int v, uint16 original_label, uint16 new_label) {
+
+    //nao sei se é continue ou break tbh
+    if (!ImageIsValidPixel(img, u, v)) return 0;
+    if (img->image[u][v] != original_label) return 0;
+
+    img->image[u][v] = new_label;
+    int count = 1;
+
+    count += FloodFillRecursive(img, u + 1, v, original_label, new_label); 
+    count += FloodFillRecursive(img, u - 1, v, original_label, new_label); 
+    count += FloodFillRecursive(img, u, v + 1, original_label, new_label); 
+    count += FloodFillRecursive(img, u, v - 1, original_label, new_label); 
+
+    return count;
+}
+
 int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
-  assert(img != NULL);
-  assert(ImageIsValidPixel(img, u, v));
-  assert(label < FIXED_LUT_SIZE);
+    assert(img != NULL);
+    assert(ImageIsValidPixel(img, u, v));
+    assert(label < FIXED_LUT_SIZE);
 
-  // TO BE COMPLETED
-  // ...
+    uint16 original_label = img->image[u][v];
 
-  return 0;
+    if (original_label == label) return 0;
+
+    // helper function 
+    return FloodFillRecursive(img, u, v, original_label, label);
 }
 
 /// Region growing using a STACK of pixel coordinates to
@@ -647,10 +681,36 @@ int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
 
-  // TO BE COMPLETED
-  // ...
+  uint16 original_label = img->image[u][v];
 
-  return 0;
+  if (original_label == label) return 0;
+
+  Stack* stack = StackCreate(img->width * img->height);
+  PixelCoords seed = {u, v};
+  StackPush(stack, seed);
+
+  int count = 0;
+
+  while ( !StackIsEmpty(stack) ) {
+    PixelCoords p = StackPop(stack);
+    int x = p.u;
+    int y = p.v;
+
+    //nao sei se é continue ou break tbh
+    if (!ImageIsValidPixel(img, x, y)) continue;
+    if (img->image[x][y] != original_label) continue;
+
+    img->image[x][y] = label;
+    count++;
+
+    StackPush(stack, (PixelCoords){x + 1, y});
+    StackPush(stack, (PixelCoords){x - 1, y});
+    StackPush(stack, (PixelCoords){x, y + 1});
+    StackPush(stack, (PixelCoords){x, y - 1});
+  }
+
+  StackDestroy(&stack);
+  return count;
 }
 
 /// Region growing using a QUEUE of pixel coordinates to
