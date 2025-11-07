@@ -157,7 +157,10 @@ Image ImageRotate90CW(const Image img);
 Image ImageRotate180CW(const Image img);
 
 /// Check whether pixel coords (u, v) are inside img.
-int ImageIsValidPixel(Image img, int u, int v);
+/// ATTENTION
+///   u : column index
+///   v : row index
+int ImageIsValidPixel(const Image img, int u, int v);
 
 /// Region Growing
 
