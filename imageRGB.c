@@ -284,10 +284,25 @@ void ImageDestroy(Image* imgp) {
 Image ImageCopy(const Image img) {
   assert(img != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  //Create the image copy
+  Image copy = ImageCreate(img->width, img->height);
 
-  return NULL;
+  //Copy number of colors
+  copy->num_colors = img->num_colors;
+  
+  //Copy the LUT
+  for (uint16 i = 0; i < copy->num_colors; i++) {
+    copy->LUT[i] = img->LUT[i];
+  }
+
+  //Copy image rows
+  for (uint32 i = 0; i < copy->height; i++) {
+    for (uint32 j = 0; j < copy->width; j++) {
+      copy->image[i][j] = img->image[i][j];
+    }
+  }
+
+  return copy;
 }
 
 /// Printing on the console
