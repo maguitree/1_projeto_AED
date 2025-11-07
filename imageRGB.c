@@ -642,10 +642,24 @@ Image ImageRotate90CW(const Image img) {
 Image ImageRotate180CW(const Image img) {
   assert(img != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  //Create rotated image
+  Image rotated = ImageCreate(img->width, img->height);
 
-  return NULL;
+  //Copy number of colors
+  rotated->num_colors = img->num_colors;
+
+  //Copy the LUT
+  for (uint16 i = 0; i < rotated->num_colors; i++) {
+    rotated->LUT[i] = img->LUT[i];
+  }
+
+  //Rotate image 180º
+  for (uint32 i = 0; i < rotated->height; i++) {
+    for (uint32 j = 0; j < rotated->width; j++) {
+      rotated->image[rotated->height - 1 - i][rotated->width - 1 - j] = img->image[i][j];
+    }
+  }
+  return rotated;
 }
 
 /// Check whether pixel coords (u, v) are inside img.
