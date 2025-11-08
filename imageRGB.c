@@ -817,8 +817,30 @@ int ImageSegmentation(Image img, FillingFunction fillFunct) {
   assert(img != NULL);
   assert(fillFunct != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  // Initialize color
+  rgb_t color = 0;
+  int num_regions = 0;
 
-  return 0;
+  for (uint32 i = 0; i < img->height; i++) {
+      for (uint32 j = 0; j < img->width; j++) {
+
+          // Check if the pixel is white
+          if (img->image[i][j] == 0) {
+
+            // Create the RGB color for new region
+            color = GenerateNextColor(color);
+
+            uint16 new_label = LUTAllocColor(img, color);
+
+            // Fill region
+            fillFunct(img, j, i, new_label);
+            
+            // Increase the counter
+            num_regions++;
+          }
+      }
+
+  }
+
+  return num_regions;
 }
