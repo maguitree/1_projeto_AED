@@ -765,10 +765,42 @@ int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
 
-  // TO BE COMPLETED
-  // ...
+  uint16 original_label = img->image[v][u];
 
-  return 0;
+  // Don't fill if label is the same
+  if (original_label == label) return 0;
+
+  // Create the queue
+  Queue* queue = QueueCreate(img->width * img->height);
+  PixelCoords seed = {u, v};
+
+  // Enqueue the starting point
+  QueueEnqueue(queue, seed);
+
+  int count = 0;
+
+  while ( !QueueIsEmpty(queue) ) {
+    PixelCoords p = QueueDequeue(queue);
+    int x = p.u;
+    int y = p.v;
+
+    // Check boundaries and same original label
+    if (!ImageIsValidPixel(img, x, y)) continue; 
+    if (img->image[y][x] != original_label) continue;
+
+    img->image[y][x] = label;
+    count++;
+
+    // Enqueue adjacent coordinates (verify if boundaries are respected)
+    QueueEnqueue(queue, (PixelCoords){x + 1, y});
+    QueueEnqueue(queue, (PixelCoords){x - 1, y});
+    QueueEnqueue(queue, (PixelCoords){x, y + 1});
+    QueueEnqueue(queue, (PixelCoords){x, y - 1});
+  }
+
+  QueueDestroy(&queue);
+  return count;
+  
 }
 
 /// Image Segmentation
