@@ -613,11 +613,7 @@ int ImageIsDifferent(const Image img1, const Image img2) {
 Image ImageRotate90CW(const Image img) {
   assert(img != NULL);
 
-  Image rotated = AllocateImageHeader(img->height, img->width);
-
-  for ( uint32 i = 0; i < rotated->height; i++ ) {
-    rotated->image[i] = AllocateRowArray(rotated->width);
-  }
+  Image rotated = ImageCreate(img->height, img->width);
 
   rotated->num_colors = img->num_colors;
   for ( int i = 0; i < img->num_colors; i++ ) {
@@ -693,9 +689,9 @@ static int FloodFillRecursive(Image img, int u, int v, uint16 original_label, ui
 
     //nao sei se é continue ou break tbh
     if (!ImageIsValidPixel(img, u, v)) return 0;
-    if (img->image[u][v] != original_label) return 0;
+    if (img->image[v][u] != original_label) return 0;
 
-    img->image[u][v] = new_label;
+    img->image[v][u] = new_label;
     int count = 1;
 
     count += FloodFillRecursive(img, u + 1, v, original_label, new_label); 
