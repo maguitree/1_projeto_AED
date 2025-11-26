@@ -1,54 +1,27 @@
-# AED 2025 — Trabalho 1: Imagens com Cor Indexada (Pseudocor)
+# AED 2025 — Project 1: Images with indexed colors (Pseudocolors)
 
-## Divisão de Tarefas
+## Authors
+Margarida Pinheiro 
+125011
 
-- `Image ImageCopy(img)` - Miguel
-- `int ImageIsEqual(img1, img2)` - Margarida
-- `Image ImageRotate90CW(img)` - Margarida
-- `Image ImageRotate180CW(img)` - Miguel
-- `int ImageRegionFillingRecursive(img, u, v, color)` - Margarida
-- `int ImageRegionFillingWithQUEUE(img, u, v, color)` - Miguel
-- `int ImageRegionFillingWithSTACK(img, u, v, color)` - Margarida
-- `int ImageSegmentation(img, fillFunct)` - Miguel
+Miguel Sousa 
+125624
 
----
+## Description
+This project implements a modular C library (`imageRGB`) for handling and processing RGB images. Unlike standard raster implementations that store full RGB triplets for every pixel, this module utilizes a **Look-Up Table (LUT)** architecture. Pixels are stored as integer indices pointing to a shared color palette, simulating indexed color formats (similar to GIF) to optimize memory usage for images with limited color depth.
 
-## Análise Experimental e Formal
+## Main funtions implemented
+- Image ImageCopy(img)
+- int ImageIsEqual(img1, img2)
+- Image ImageRotate90CW(img)
+- Image ImageRotate180CW(img)
+- int ImageRegionFillingRecursive(img, u, v, color)
+- int ImageRegionFillingWithQUEUE(img, u, v, color)
+- int ImageRegionFillingwWithSTACK(img, u, v, color)
+- int ImageSegmentation(img, fillFunct)
 
-Função alvo: `int ImageIsEqual(img1, img2)`
-
-- Realizar testes com imagens de diferentes tamanhos e conteúdos
-- Medir número de comparações e tempo de execução
-- Analisar complexidade teórica
-- Comparar resultados experimentais com a análise formal
-
----
-
-## Relatório
-
-O relatório deve incluir:
-
-- Descrição de cada função (cada membro escreve a sua)
-- Justificação das decisões de implementação
-- Resultados dos testes realizados
-- Comparação entre estratégias de preenchimento de regiões (recursiva, com fila, com pilha)
-
----
-
-## Testes Unitários
-
-Sugestão: criar um ficheiro dedicado para testes unitários que verifique o funcionamento de todas as funções implementadas.
-
-Exemplo:
-```c
-int main() {
-    test_ImageCopy();
-    test_ImageIsEqual();
-    test_ImageRotate90CW();
-    test_ImageRotate180CW();
-    test_ImageRegionFillingRecursive();
-    test_ImageRegionFillingWithQUEUE();
-    test_ImageRegionFillingWithSTACK();
-    test_ImageSegmentation();
-    return 0;
-}
+## References
+- Guião do 1º projeto de AED - 2025/2026
+- Documentação fornecida nos ficheiros já feitos
+- Slides das aulas teóricas de AED
+- GeeksforGeeks. (n.d.). Flood Fill Algorithm – Explained with Examples. Disponível em: https://www.geeksforgeeks.org/flood-fill-algorithm/

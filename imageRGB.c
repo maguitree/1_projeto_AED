@@ -707,7 +707,7 @@ int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
     assert(ImageIsValidPixel(img, u, v));
     assert(label < FIXED_LUT_SIZE);
 
-    uint16 original_label = img->image[u][v];
+    uint16 original_label = img->image[v][u];
 
     if (original_label == label) return 0;
 
@@ -722,7 +722,7 @@ int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
 
-  uint16 original_label = img->image[u][v];
+  uint16 original_label = img->image[v][u];
 
   if (original_label == label) return 0;
 
@@ -737,11 +737,10 @@ int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
     int x = p.u;
     int y = p.v;
 
-    //nao sei se é continue ou break tbh
     if (!ImageIsValidPixel(img, x, y)) continue;
-    if (img->image[x][y] != original_label) continue;
+    if (img->image[y][x] != original_label) continue;
 
-    img->image[x][y] = label;
+    img->image[y][x] = label;
     count++;
 
     StackPush(stack, (PixelCoords){x + 1, y});
